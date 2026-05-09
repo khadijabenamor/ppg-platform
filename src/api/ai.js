@@ -24,3 +24,5 @@ export const requestVerification = (id) => API.post(`/summaries/${id}/request-ve
 export const getVerifications    = () => API.get('/verifications/');
 export const respondVerification = (id, status, supervisor_comment) =>
   API.patch(`/verification/${id}/respond/`, { status, supervisor_comment });
+export const getMySummaries = (studentName) =>
+    API.get(`/my-summaries/?student_name=${studentName}`);
