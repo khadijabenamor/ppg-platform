@@ -22,6 +22,8 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "rest_framework",
     "ai_generation",
+    "rest_framework_simplejwt",
+    "authentication",
 ]
 
 MIDDLEWARE = [
@@ -86,3 +88,14 @@ REST_FRAMEWORK = {
     "DEFAULT_PARSER_CLASSES":   ["rest_framework.parsers.JSONParser"],
 }
 CORS_ALLOW_ALL_ORIGINS = True
+
+AUTH_USER_MODEL = "authentication.User"
+
+from datetime import timedelta
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME":    timedelta(hours=2),
+    "REFRESH_TOKEN_LIFETIME":   timedelta(days=7),
+    "ROTATE_REFRESH_TOKENS":    True,
+    "BLACKLIST_AFTER_ROTATION": True,
+}

@@ -312,3 +312,45 @@ class VerificationListView(APIView):
             for vr in vrs
         ]
         return Response(data, status=status.HTTP_200_OK)
+
+class MyResumeListView(APIView):
+    """
+    GET /api/ai/my-summaries/?student_name=khadija
+    Retourne les résumés d'un étudiant avec les réponses du superviseur.
+    """
+    def get(self, request):
+        student_name = request.query_params.get("student_name", "").strip()
+
+        if not student_name:
+            return Response(
+                {"error": "Paramètre student_name requis."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        summaries = GeneratedSummary.objects.filter(student_name=student_name)
+        data = []
+        for s in summaries:
+            verification = None
+            try:
+                vr = s.verification_request
+                verification = {
+                    "id":                 vr.id,
+                    "status":             vr.status,
+                    "supervisor_comment": vr.supervisor_comment,
+                    "responded_at":       vr.responded_at,
+                }
+            except VerificationRequest.DoesNotExist:
+                pass
+
+            data.append({
+                "id":           s.id,
+                "summary":      s.summary,
+                "keywords":     s.keywords,
+                "status":       s.status,
+                "source":       s.source,
+                "file_name":    s.file_name,
+                "created_at":   s.created_at,
+                "verification": verification,
+            })
+
+        return Response(data, status=status.HTTP_200_OK)
