@@ -4,6 +4,7 @@ import Navbar from './components/Navbar';
 import Login from './pages/Login';
 import Etudiant from './pages/Etudiant';
 import Superviseur from './pages/Superviseur';
+import Evaluation from './pages/Evaluation';
 
 function PrivateRoute({ children, role }) {
   const { user, loading } = useAuth();
@@ -23,6 +24,11 @@ function AppRoutes() {
           <Route path="/" element={
             <PrivateRoute role="etudiant">
               <Etudiant />
+            </PrivateRoute>
+          } />
+          <Route path="/evaluation" element={
+            <PrivateRoute role="etudiant">
+              <Evaluation />
             </PrivateRoute>
           } />
           <Route path="/superviseur" element={

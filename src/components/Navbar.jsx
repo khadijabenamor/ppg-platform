@@ -34,13 +34,22 @@ export default function Navbar() {
       {/* Links */}
       <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
         {user?.role === 'etudiant' && (
-          <Link to="/" style={{
-            textDecoration: 'none', padding: '8px 18px', borderRadius: '8px',
-            fontSize: '0.875rem', fontFamily: 'Syne', fontWeight: 500,
-            background: pathname === '/' ? 'var(--accent)' : 'transparent',
-            color: pathname === '/' ? '#fff' : 'var(--text-muted)',
-            border: `1px solid ${pathname === '/' ? 'var(--accent)' : 'var(--border)'}`,
-          }}>✦ Générer</Link>
+          <>
+            <Link to="/" style={{
+              textDecoration: 'none', padding: '8px 18px', borderRadius: '8px',
+              fontSize: '0.875rem', fontFamily: 'Syne', fontWeight: 500,
+              background: pathname === '/' ? 'var(--accent)' : 'transparent',
+              color: pathname === '/' ? '#fff' : 'var(--text-muted)',
+              border: `1px solid ${pathname === '/' ? 'var(--accent)' : 'var(--border)'}`,
+            }}>✦ Générer</Link>
+            <Link to="/evaluation" style={{
+              textDecoration: 'none', padding: '8px 18px', borderRadius: '8px',
+              fontSize: '0.875rem', fontFamily: 'Syne', fontWeight: 500,
+              background: pathname === '/evaluation' ? 'var(--accent)' : 'transparent',
+              color: pathname === '/evaluation' ? '#fff' : 'var(--text-muted)',
+              border: `1px solid ${pathname === '/evaluation' ? 'var(--accent)' : 'var(--border)'}`,
+            }}>📝 Quiz</Link>
+          </>
         )}
         {user?.role === 'superviseur' && (
           <Link to="/superviseur" style={{

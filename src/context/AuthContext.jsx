@@ -3,9 +3,9 @@ import { login as loginAPI, logout as logoutAPI, profile as profileAPI } from '.
 
 const AuthContext = createContext(null);
 
-// Stockage en mémoire (pas localStorage)
-let storedToken = null;
-let storedRefresh = null;
+// Stockage en mémoire + localStorage pour compatibilité
+let storedToken = localStorage.getItem('access_token');
+let storedRefresh = localStorage.getItem('refresh_token');
 
 export function AuthProvider({ children }) {
   const [user, setUser]       = useState(null);
@@ -13,23 +13,19 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const loadProfile = async () => {
-      if (token) {
-        try {
-          const res = await profileAPI(token);
-          setUser(res.data);
-        } catch {
-          storedToken   = null;
-          storedRefresh = null;
-          setToken(null);
-          setUser(null);
-        }
-      }
+    if (storedToken) {
+      setToken(storedToken);
       setLoading(false);
-    };
-    loadProfile();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    } else {
+      setLoading(false);
+    }
   }, []);
+
+  useEffect(() => {
+    if (token) {
+      localStorage.setItem('access_token', token);
+    }
+  }, [token]);
 
 
   const login = async (username, password) => {
@@ -37,6 +33,8 @@ export function AuthProvider({ children }) {
     const { user, tokens } = res.data;
     storedToken   = tokens.access;
     storedRefresh = tokens.refresh;
+    localStorage.setItem('access_token', tokens.access);
+    localStorage.setItem('refresh_token', tokens.refresh);
     setUser(user);
     setToken(tokens.access);
     return user;
@@ -48,6 +46,8 @@ export function AuthProvider({ children }) {
     } catch {}
     storedToken   = null;
     storedRefresh = null;
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('refresh_token');
     setUser(null);
     setToken(null);
   };
