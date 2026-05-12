@@ -24,7 +24,12 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt",
     "accounts",
     "ai_generation",
+<<<<<<< HEAD
     "auto_evaluation",
+=======
+    "rest_framework_simplejwt",
+    "authentication",
+>>>>>>> e7bee7e4fca30b4c5f71fd137f001beed19bd32a
 ]
 
 MIDDLEWARE = [
@@ -100,8 +105,21 @@ REST_FRAMEWORK = {
 }
 CORS_ALLOW_ALL_ORIGINS = True
 
+<<<<<<< HEAD
 from datetime import timedelta
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(hours=24),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
 }
+=======
+AUTH_USER_MODEL = "authentication.User"
+
+from datetime import timedelta
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME":    timedelta(hours=2),
+    "REFRESH_TOKEN_LIFETIME":   timedelta(days=7),
+    "ROTATE_REFRESH_TOKENS":    True,
+    "BLACKLIST_AFTER_ROTATION": True,
+}
+>>>>>>> e7bee7e4fca30b4c5f71fd137f001beed19bd32a
