@@ -6,3 +6,4 @@ pdfplumber>=0.10
 requests>=2.31
 djangorestframework-simplejwt>=5.3
 django-cors-headers>=3.13
+groq>=0.4.0

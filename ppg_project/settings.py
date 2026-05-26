@@ -1,6 +1,7 @@
 import os
 from pathlib import Path
 from dotenv import load_dotenv
+from datetime import timedelta
 
 load_dotenv()
 
@@ -24,12 +25,8 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt",
     "accounts",
     "ai_generation",
-<<<<<<< HEAD
     "auto_evaluation",
-=======
-    "rest_framework_simplejwt",
     "authentication",
->>>>>>> e7bee7e4fca30b4c5f71fd137f001beed19bd32a
 ]
 
 MIDDLEWARE = [
@@ -93,7 +90,7 @@ OLLAMA_MODEL = os.getenv("OLLAMA_MODEL", "mistral")
 GROQ_API_KEY = os.getenv("GROQ_API_KEY", "")
 GROQ_MODEL   = os.getenv("GROQ_MODEL", "llama-3.3-70b-versatile")
 
-# IA Provider preference: 'groq' ou 'ollama'
+# IA Provider: 'groq' ou 'ollama'
 IA_PROVIDER  = os.getenv("IA_PROVIDER", "groq")
 
 REST_FRAMEWORK = {
@@ -103,18 +100,10 @@ REST_FRAMEWORK = {
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ],
 }
+
 CORS_ALLOW_ALL_ORIGINS = True
 
-<<<<<<< HEAD
-from datetime import timedelta
-SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(hours=24),
-    "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
-}
-=======
 AUTH_USER_MODEL = "authentication.User"
-
-from datetime import timedelta
 
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME":    timedelta(hours=2),
@@ -122,4 +111,24 @@ SIMPLE_JWT = {
     "ROTATE_REFRESH_TOKENS":    True,
     "BLACKLIST_AFTER_ROTATION": True,
 }
->>>>>>> e7bee7e4fca30b4c5f71fd137f001beed19bd32a
+
+
+
+CORS_ALLOW_HEADERS = [
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'origin',
+    'x-csrftoken',
+    'x-requested-with',
+]
+
+CORS_ALLOW_METHODS = [
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
+]
