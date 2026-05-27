@@ -11,6 +11,15 @@ class User(AbstractUser):
     avatar     = models.CharField(max_length=255, blank=True, default="")
     created_at = models.DateTimeField(auto_now_add=True)
 
+    superviseur = models.ForeignKey(
+    'self',
+    on_delete=models.SET_NULL,
+    null=True,
+    blank=True,
+    limit_choices_to={'role': 'superviseur'},
+    related_name='etudiants_supervises'
+)
+
     def __str__(self):
         return f"{self.username} ({self.get_role_display()})"
 
