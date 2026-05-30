@@ -6,6 +6,7 @@ class User(AbstractUser):
     ROLE_CHOICES = [
         ("etudiant",    "Étudiant"),
         ("superviseur", "Superviseur"),
+        ("admin","administrateur"),
     ]
     role       = models.CharField(max_length=20, choices=ROLE_CHOICES, default="etudiant")
     avatar     = models.CharField(max_length=255, blank=True, default="")
@@ -35,7 +36,7 @@ class Abonnement(models.Model):
     TYPE_CHOICES = [
         ("free",    "Gratuit"),
         ("premium", "Premium"),
-        ("admin","administrateur"),
+        
     ]
     user      = models.OneToOneField(User, on_delete=models.CASCADE, related_name="abonnement")
     type      = models.CharField(max_length=10, choices=TYPE_CHOICES, default="free")
