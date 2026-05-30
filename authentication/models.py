@@ -35,6 +35,7 @@ class Abonnement(models.Model):
     TYPE_CHOICES = [
         ("free",    "Gratuit"),
         ("premium", "Premium"),
+        ("admin","administrateur"),
     ]
     user      = models.OneToOneField(User, on_delete=models.CASCADE, related_name="abonnement")
     type      = models.CharField(max_length=10, choices=TYPE_CHOICES, default="free")
