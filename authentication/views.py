@@ -76,6 +76,8 @@ class ProfileView(APIView):
 
 from rest_framework.permissions import IsAuthenticated
 from authentication.models import User
+from ai_generation.models import GeneratedSummary
+from auto_evaluation.models import Flashcard, QuizAttempt
 
 class AdminDashboardView(APIView):
     permission_classes = [IsAuthenticated]
@@ -100,11 +102,23 @@ class AdminDashboardView(APIView):
                 abonnement = student.abonnement.type
             except:
                 abonnement = "free"
+            
+            summary_count = GeneratedSummary.objects.filter(student_name=student.username).count()
+            flashcard_count = Flashcard.objects.filter(created_by=student).count()
+            quiz_count = QuizAttempt.objects.filter(student=student).count()
 
             data = {
                 "id": student.id,
                 "username": student.username,
                 "email": student.email,
+                '''
+                "summaries": summary_count,
+                "flashcards": flashcard_count,
+                "quizzes": quiz_count,'''
+                "summaries_count":GeneratedSummary.objects.filter( student_name=student.username).count(),
+                "flashcards_count": Flashcard.objects.filter(created_by=student).count(),
+                "quiz_attempts_count":QuizAttempt.objects.filter(student=student).count(),
+
             }
 
             if abonnement == "premium":

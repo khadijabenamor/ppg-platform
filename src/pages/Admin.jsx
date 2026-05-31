@@ -54,6 +54,9 @@ export default function Admin() {
                     <tr>
                         <th>Username</th>
                         <th>Email</th>
+                        <th>Résumés IA</th>
+                        <th>Flashcards IA</th>
+                        <th>Quiz réalisés</th>
                     </tr>
                 </thead>
 
@@ -66,7 +69,18 @@ export default function Admin() {
                             <td>{student.username}</td>
 
                             <td>{student.email}</td>
+                     {/*
+                            <td>{student.summaries}</td>
 
+                            <td>{student.flashcards}</td>
+
+                            <td>{student.quizzes}</td>
+*/}
+                            <td>{student.summaries_count}</td>
+
+                            <td>{student.flashcards_count}</td>
+
+                            <td>{student.quiz_attempts_count}</td>
                         </tr>
 
                     ))}
@@ -86,6 +100,9 @@ export default function Admin() {
                         <th>Username</th>
                         <th>Email</th>
                         <th>Superviseur</th>
+                        <th>Résumés IA</th>
+                        <th>Flashcards IA</th>
+                        <th>Quiz réalisés</th>
                     </tr>
                 </thead>
 
@@ -100,6 +117,18 @@ export default function Admin() {
                             <td>{student.email}</td>
 
                             <td>{student.superviseur || "-"}</td>
+{/*
+                            <td>{student.summaries}</td>
+
+                            <td>{student.flashcards}</td>
+
+                            <td>{student.quizzes}</td>*/}
+
+                            <td>{student.summaries_count}</td>
+
+                            <td>{student.flashcards_count}</td>
+
+                            <td>{student.quiz_attempts_count}</td>
 
                         </tr>
 
