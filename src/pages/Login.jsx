@@ -27,10 +27,15 @@ export default function Login() {
     try {
       const loggedUser = await login(loginData.username, loginData.password);
       // Redirige selon le rôle
-      if (loggedUser.role === 'superviseur') {
-        navigate('/superviseur');
-      } else {
-        navigate('/');
+      if (loggedUser.role === 'admin')
+      {
+           navigate('/admin');
+      } else if (loggedUser.role === 'superviseur') 
+      {
+           navigate('/superviseur');
+      } else 
+      {
+           navigate('/');
       }
     } catch (e) {
       setError(e.response?.data?.error || 'Identifiants incorrects.');

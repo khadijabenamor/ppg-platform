@@ -73,3 +73,69 @@ class ProfileView(APIView):
                 setattr(user, field, request.data[field])
         user.save()
         return Response(UserSerializer(user).data)
+
+from rest_framework.permissions import IsAuthenticated
+from authentication.models import User
+
+class AdminDashboardView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+
+        if request.user.role != "admin":
+            return Response(
+                {"error": "Accès refusé"},
+                status=status.HTTP_403_FORBIDDEN
+            )
+
+        etudiants_free = []
+        etudiants_premium = []
+        superviseurs = []
+
+        students = User.objects.filter(role="etudiant")
+
+        for student in students:
+
+            try:
+                abonnement = student.abonnement.type
+            except:
+                abonnement = "free"
+
+            data = {
+                "id": student.id,
+                "username": student.username,
+                "email": student.email,
+            }
+
+            if abonnement == "premium":
+
+                data["superviseur"] = (
+                    student.superviseur.username
+                    if student.superviseur
+                    else None
+                )
+
+                etudiants_premium.append(data)
+
+            else:
+                etudiants_free.append(data)
+
+        supervisors = User.objects.filter(role="superviseur")
+
+        for sup in supervisors:
+
+            superviseurs.append({
+                "id": sup.id,
+                "username": sup.username,
+                "email": sup.email,
+                "etudiants": [
+                    e.username
+                    for e in sup.etudiants_supervises.all()
+                ]
+            })
+
+        return Response({
+            "etudiants_free": etudiants_free,
+            "etudiants_premium": etudiants_premium,
+            "superviseurs": superviseurs,
+        })

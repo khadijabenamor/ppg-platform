@@ -5,6 +5,7 @@ import Login from './pages/Login';
 import Etudiant from './pages/Etudiant';
 import Superviseur from './pages/Superviseur';
 import Evaluation from './pages/Evaluation';
+import Admin from './pages/Admin';
 
 function PrivateRoute({ children, role }) {
   const { user, loading } = useAuth();
@@ -34,6 +35,11 @@ function AppRoutes() {
           <Route path="/superviseur" element={
             <PrivateRoute role="superviseur">
               <Superviseur />
+            </PrivateRoute>
+          } />
+          <Route path="/admin" element={
+            <PrivateRoute role="admin">
+               <Admin />
             </PrivateRoute>
           } />
           <Route path="*" element={<Navigate to="/" />} />
