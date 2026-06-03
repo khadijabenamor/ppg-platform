@@ -95,7 +95,7 @@ IA_PROVIDER  = os.getenv("IA_PROVIDER", "groq")
 
 REST_FRAMEWORK = {
     "DEFAULT_RENDERER_CLASSES": ["rest_framework.renderers.JSONRenderer"],
-    "DEFAULT_PARSER_CLASSES":   ["rest_framework.parsers.JSONParser"],
+    "DEFAULT_PARSER_CLASSES":   ["rest_framework.parsers.JSONParser","rest_framework.parsers.MultiPartParser","rest_framework.parsers.FormParser",],
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ],
@@ -132,3 +132,5 @@ CORS_ALLOW_METHODS = [
     'POST',
     'PUT',
 ]
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / "media"

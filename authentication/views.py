@@ -68,11 +68,51 @@ class ProfileView(APIView):
 
     def patch(self, request):
         user = request.user
-        for field in ["first_name", "last_name", "avatar"]:
+        for field in ["first_name", "last_name","username","email", "avatar"]:
             if field in request.data:
                 setattr(user, field, request.data[field])
         user.save()
         return Response(UserSerializer(user).data)
+
+
+class ChangePasswordView(APIView):
+
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+
+        old_password = request.data.get(
+            "old_password"
+        )
+
+        new_password = request.data.get(
+            "new_password"
+        )
+
+        if not request.user.check_password(
+            old_password
+        ):
+
+            return Response(
+                {
+                    "error":
+                    "Mot de passe incorrect"
+                },
+                status=400
+            )
+
+        request.user.set_password(
+            new_password
+        )
+
+        request.user.save()
+
+        return Response(
+            {
+                "message":
+                "Mot de passe modifié"
+            }
+        )   
 
 from rest_framework.permissions import IsAuthenticated
 from authentication.models import User

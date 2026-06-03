@@ -12,14 +12,48 @@ export function AuthProvider({ children }) {
   const [token, setToken]     = useState(storedToken);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
+  {/*useEffect(() => {
     if (storedToken) {
       setToken(storedToken);
       setLoading(false);
     } else {
       setLoading(false);
     }
-  }, []);
+  }, []);*/}
+  useEffect(() => {
+
+  const loadUser = async () => {
+
+    if (!storedToken) {
+      setLoading(false);
+      return;
+    }
+
+    try {
+
+      const res = await profileAPI(storedToken);
+
+      setUser(res.data);
+      setToken(storedToken);
+
+    } catch (err) {
+
+      localStorage.removeItem("access_token");
+      localStorage.removeItem("refresh_token");
+
+      storedToken = null;
+      storedRefresh = null;
+
+    } finally {
+
+      setLoading(false);
+
+    }
+  };
+
+  loadUser();
+
+}, []);
 
   useEffect(() => {
     if (token) {

@@ -9,7 +9,8 @@ class User(AbstractUser):
         ("admin","administrateur"),
     ]
     role       = models.CharField(max_length=20, choices=ROLE_CHOICES, default="etudiant")
-    avatar     = models.CharField(max_length=255, blank=True, default="")
+    '''avatar     = models.CharField(max_length=255, blank=True, default="")'''
+    avatar = models.ImageField(upload_to="avatars/",blank=True,null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     superviseur = models.ForeignKey(

@@ -6,6 +6,7 @@ import Etudiant from './pages/Etudiant';
 import Superviseur from './pages/Superviseur';
 import Evaluation from './pages/Evaluation';
 import Admin from './pages/Admin';
+import Profile from './pages/Profile';
 
 function PrivateRoute({ children, role }) {
   const { user, loading } = useAuth();
@@ -42,6 +43,11 @@ function AppRoutes() {
                <Admin />
             </PrivateRoute>
           } />
+          <Route path="/profile" element={
+            <PrivateRoute>
+               <Profile />
+          </PrivateRoute>
+} />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </>

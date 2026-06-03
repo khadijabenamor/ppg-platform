@@ -64,6 +64,26 @@ export default function Navbar() {
         {/* User info */}
         {user && (
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginLeft: '8px' }}>
+            <Link
+  to="/profile"
+  style={{
+    textDecoration: 'none',
+    padding: '8px 18px',
+    borderRadius: '8px',
+    fontSize: '0.875rem',
+    fontFamily: 'Syne',
+    fontWeight: 500,
+    background: pathname === '/profile' ? 'var(--accent)' : 'transparent',
+    color: pathname === '/profile' ? '#fff' : 'var(--text-muted)',
+    border: `1px solid ${
+      pathname === '/profile'
+        ? 'var(--accent)'
+        : 'var(--border)'
+    }`,
+  }}
+>
+  👤 Profil
+</Link>
             <div style={{
               background: user.is_premium
                 ? 'linear-gradient(135deg, #f7971e, #ffd200)'

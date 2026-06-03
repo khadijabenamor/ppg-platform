@@ -33,7 +33,31 @@ export default function Admin() {
 
     if (loading)
         return <div>Chargement...</div>;
+    {/*console.log(res.data.etudiants_free);*/}
+    const loadData = async () => {
 
+    try {
+        console.log("AVANT APPEL API");
+
+        const res = await getDashboard();
+
+        {/*console.log(res.data.etudiants_free);*/}
+        console.log("REPONSE API : ", res.data);
+
+
+        {/*setData(res.data.etudiants_free);*/}
+        setData(res.data);
+
+    } catch (err) {
+
+        console.error("ERROR API",err);
+
+    } finally {
+
+        setLoading(false);
+
+    }
+    };
     return (
 
         <div style={{
