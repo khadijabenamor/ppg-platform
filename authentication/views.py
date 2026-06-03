@@ -43,7 +43,8 @@ class LoginView(APIView):
 
         tokens = get_tokens_for_user(user)
         return Response(
-            {"message": f"Bienvenue {user.first_name or user.username} !", "user": UserSerializer(user).data, "tokens": tokens},
+            {"message": f"Bienvenue {user.first_name or user.username} !", "user": UserSerializer(user, context={'request': request}).data, "tokens": tokens},
+
             status=status.HTTP_200_OK,
         )
 
@@ -64,15 +65,17 @@ class ProfileView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        return Response(UserSerializer(request.user).data)
+        return Response(UserSerializer(request.user,context={"request": request}).data)
 
     def patch(self, request):
         user = request.user
-        for field in ["first_name", "last_name","username","email", "avatar"]:
+        for field in ["first_name", "last_name","username","email"]:
             if field in request.data:
                 setattr(user, field, request.data[field])
+            if "avatar" in request.FILES:
+                user.avatar = request.FILES["avatar"]    
         user.save()
-        return Response(UserSerializer(user).data)
+        return Response(UserSerializer(user,context={"request": request}).data)
 
 
 class ChangePasswordView(APIView):

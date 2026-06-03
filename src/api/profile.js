@@ -10,10 +10,41 @@ export const getProfile = (token) =>
       Authorization: `Bearer ${token}`,
     },
   });
-
+{/*}
 export const updateProfile = (token, data) =>
   API.patch("/profile/", data, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
-  });
+  });*/}
+  export const updateProfile = (
+  token,
+  formData
+) =>
+  API.patch(
+    "/profile/",
+    formData,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "multipart/form-data",
+      },
+    }
+  );
+  export const changePassword = (
+  token,
+  old_password,
+  new_password
+) =>
+  API.post(
+    "/change-password/",
+    {
+      old_password,
+      new_password,
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );

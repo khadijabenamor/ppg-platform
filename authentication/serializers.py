@@ -30,10 +30,12 @@ class RegisterSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     abonnement_type = serializers.SerializerMethodField()
     is_premium      = serializers.SerializerMethodField()
+    avatar_url = serializers.SerializerMethodField()
+
 
     class Meta:
         model  = User
-        fields = ("id", "username", "email", "first_name", "last_name", "role", "avatar", "abonnement_type", "is_premium", "created_at")
+        fields = ("id", "username", "email", "first_name", "last_name", "role", "avatar","avatar_url", "abonnement_type", "is_premium", "created_at")
 
     def get_abonnement_type(self, obj):
         try:
@@ -43,3 +45,18 @@ class UserSerializer(serializers.ModelSerializer):
 
     def get_is_premium(self, obj):
         return obj.is_premium
+    
+    def get_avatar_url(self, obj):
+
+        request = self.context.get("request")
+
+        if obj.avatar:
+            if request:
+                return request.build_absolute_uri(
+                obj.avatar.url
+                )
+            return obj.avatar.url
+
+            
+
+        return None
