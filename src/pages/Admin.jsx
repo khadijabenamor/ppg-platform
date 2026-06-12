@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { getDashboard } from "../api/admin";
 
 export default function Admin() {
-
+    console.log("ADMIN PAGE CHARGEE");
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(true);
 
@@ -11,14 +11,17 @@ export default function Admin() {
         const loadData = async () => {
 
             try {
+                console.log("AVANT APPEL API");
 
                 const res = await getDashboard();
+                console.log("REPONSE API :", res.data);
+
 
                 setData(res.data);
 
             } catch (err) {
 
-                console.error(err);
+                console.error("ERREUR API :",err);
 
             } finally {
 
@@ -34,18 +37,18 @@ export default function Admin() {
     if (loading)
         return <div>Chargement...</div>;
     {/*console.log(res.data.etudiants_free);*/}
-    const loadData = async () => {
+    {/*const loadData = async () => {
 
     try {
         console.log("AVANT APPEL API");
 
         const res = await getDashboard();
 
-        {/*console.log(res.data.etudiants_free);*/}
+           console.log(res.data.etudiants_free);
         console.log("REPONSE API : ", res.data);
 
 
-        {/*setData(res.data.etudiants_free);*/}
+           setData(res.data.etudiants_free);
         setData(res.data);
 
     } catch (err) {
@@ -57,7 +60,7 @@ export default function Admin() {
         setLoading(false);
 
     }
-    };
+    };*/}
     return (
 
         <div style={{
