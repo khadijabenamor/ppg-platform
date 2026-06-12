@@ -17,6 +17,20 @@ export default function Admin() {
     const [loading, setLoading] = useState(true);
     const [stats, setStats] = useState([]);
 
+    const loadStatistics = async (days) => {
+
+    try {
+
+        const response = await getStatistics(days);
+
+        setStats(response.data);
+
+    } catch (error) {
+
+        console.error(error);
+
+    }
+};
     useEffect(() => {
 
         const loadData = async () => {
@@ -29,10 +43,10 @@ export default function Admin() {
 
 
                 setData(res.data);
-                const stats = await getStatistics(30);
-
+                {/*const stats = await getStatistics(30);*/}
+                await loadStatistics(30);
                  console.log("STATISTIQUES :", stats.data);
-                 setStats(stats.data);
+                 {/*setStats(stats.data);*/}
 
             } catch (err) {
 
@@ -76,7 +90,10 @@ export default function Admin() {
 
     }
     };*/}
-    const chartData = stats.summaries || [];
+    {/*const chartData = stats.summaries || [];*/}
+    const chartData = stats;
+    console.log("STATS =", stats);
+    console.log("CHART DATA =", chartData);
     return (
 
         <div style={{
@@ -88,11 +105,30 @@ export default function Admin() {
             <h1>Administration</h1>
 
             <hr />
-              <h2>Évolution des résumés générés</h2>
+              <h2>Évolution des activités IA</h2>
+              <div style={{ marginBottom: "20px" }}>
+
+    <button onClick={() => loadStatistics(7)}>
+        7 jours
+    </button>
+
+    <button onClick={() => loadStatistics(30)}>
+        30 jours
+    </button>
+
+    <button onClick={() => loadStatistics(90)}>
+        90 jours
+    </button>
+
+    <button onClick={() => loadStatistics(365)}>
+        1 an
+    </button>
+
+</div>
 
 <div style={{ width: "100%", height: 400 }}>
 
-    <ResponsiveContainer>
+    <ResponsiveContainer width="100%" height="100%">
 
         <LineChart data={chartData}>
 
@@ -107,10 +143,40 @@ export default function Admin() {
             <Legend />
 
             <Line
-                type="monotone"
-                dataKey="total"
-                name="Résumés générés"
-            />
+    type="monotone"
+    dataKey="summaries"
+    name="Résumés"
+    stroke="#ff9900"
+    strokeWidth={3}
+    dot={{ r: 5 }}
+/>
+
+<Line
+    type="monotone"
+    dataKey="flashcards"
+    name="Flashcards"
+    stroke="#00aa00"
+    strokeWidth={3}
+    dot={{ r: 5 }}
+/>
+
+<Line
+    type="monotone"
+    dataKey="quizzes"
+    name="Quiz"
+    stroke="#0066ff"
+    strokeWidth={3}
+    dot={{ r: 5 }}
+/>
+
+<Line
+    type="monotone"
+    dataKey="total"
+    name="Total"
+    stroke="#ff0000"
+    strokeWidth={3}
+    dot={{ r: 5 }}
+/>
 
         </LineChart>
 

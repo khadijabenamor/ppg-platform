@@ -247,8 +247,42 @@ class AdminStatisticsView(APIView):
         print("SUMMARIES =", list(summaries))
         print("FLASHCARDS =", list(flashcards))
         print("QUIZZES =", list(quizzes))
-        return Response({
-            "summaries": list(summaries),
-            "flashcards": list(flashcards),
-            "quizzes": list(quizzes),
-        })   
+        stats = {}
+
+        for item in summaries:
+            day = str(item["day"])
+
+            if day not in stats:
+                 stats[day] = {"day": day,"summaries": 0,"flashcards": 0,"quizzes": 0,"total": 0,}
+
+            stats[day]["summaries"] = item["total"]
+
+
+            for item in flashcards:
+                    day = str(item["day"])
+
+                    if day not in stats:
+                        stats[day] = {"day": day,"summaries": 0,"flashcards": 0,"quizzes": 0,"total": 0,}
+
+                    stats[day]["flashcards"] = item["total"]
+
+
+            for item in quizzes:
+                 day = str(item["day"])
+
+                 if day not in stats:
+                      stats[day] = {"day": day,"summaries": 0,"flashcards": 0,"quizzes": 0,"total": 0,}
+
+                 stats[day]["quizzes"] = item["total"]
+
+
+            for day in stats:
+                stats[day]["total"] = (stats[day]["summaries"]+ stats[day]["flashcards"]+ stats[day]["quizzes"])
+
+
+        return Response(
+    sorted(
+        stats.values(),
+        key=lambda x: x["day"]
+    )
+)
