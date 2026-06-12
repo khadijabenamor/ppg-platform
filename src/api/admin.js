@@ -19,3 +19,10 @@ export const getDashboard = () =>
     API.get("/admin-dashboard/", {
         headers: getAuthHeaders(),
     });
+
+export const getStatistics = (days = 30) =>
+    API.get(`/admin/statistics/?days=${days}`, {
+        headers: getAuthHeaders(),
+    });   
+
+ 

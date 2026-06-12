@@ -1,10 +1,21 @@
 import { useEffect, useState } from "react";
-import { getDashboard } from "../api/admin";
+import {
+    LineChart,
+    Line,
+    XAxis,
+    YAxis,
+    CartesianGrid,
+    Tooltip,
+    Legend,
+    ResponsiveContainer
+} from "recharts";
+import { getDashboard , getStatistics} from "../api/admin";
 
 export default function Admin() {
     console.log("ADMIN PAGE CHARGEE");
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [stats, setStats] = useState([]);
 
     useEffect(() => {
 
@@ -18,6 +29,10 @@ export default function Admin() {
 
 
                 setData(res.data);
+                const stats = await getStatistics(30);
+
+                 console.log("STATISTIQUES :", stats.data);
+                 setStats(stats.data);
 
             } catch (err) {
 
@@ -61,6 +76,7 @@ export default function Admin() {
 
     }
     };*/}
+    const chartData = stats.summaries || [];
     return (
 
         <div style={{
@@ -72,7 +88,35 @@ export default function Admin() {
             <h1>Administration</h1>
 
             <hr />
+              <h2>Évolution des résumés générés</h2>
 
+<div style={{ width: "100%", height: 400 }}>
+
+    <ResponsiveContainer>
+
+        <LineChart data={chartData}>
+
+            <CartesianGrid strokeDasharray="3 3" />
+
+            <XAxis dataKey="day" />
+
+            <YAxis />
+
+            <Tooltip />
+
+            <Legend />
+
+            <Line
+                type="monotone"
+                dataKey="total"
+                name="Résumés générés"
+            />
+
+        </LineChart>
+
+    </ResponsiveContainer>
+
+</div>
             <h2>Étudiants Free</h2>
 
             <table border="1" cellPadding="10">

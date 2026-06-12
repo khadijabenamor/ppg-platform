@@ -7,6 +7,14 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from .models import User, Abonnement
 from .serializers import RegisterSerializer, UserSerializer
 
+from django.utils import timezone
+from datetime import timedelta
+from django.db.models import Count
+from django.db.models.functions import TruncDate
+
+from ai_generation.models import GeneratedSummary
+from auto_evaluation.models import Flashcard, Quiz
+
 
 def get_tokens_for_user(user):
     refresh = RefreshToken.for_user(user)
@@ -193,3 +201,54 @@ class AdminDashboardView(APIView):
             "etudiants_premium": etudiants_premium,
             "superviseurs": superviseurs,
         })
+    
+
+class AdminStatisticsView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+
+        if request.user.role != "admin":
+            return Response(
+                {"error": "Accès refusé"},
+                status=status.HTTP_403_FORBIDDEN
+            )
+
+        days = int(request.GET.get("days", 30))
+
+        start_date = timezone.now() - timedelta(days=days)
+
+        summaries = (
+            GeneratedSummary.objects
+            .filter(created_at__gte=start_date)
+            .annotate(day=TruncDate("created_at"))
+            .values("day")
+            .annotate(total=Count("id"))
+            .order_by("day")
+        )
+
+        flashcards = (
+            Flashcard.objects
+            .filter(created_at__gte=start_date)
+            .annotate(day=TruncDate("created_at"))
+            .values("day")
+            .annotate(total=Count("id"))
+            .order_by("day")
+        )
+
+        quizzes = (
+            Quiz.objects
+            .filter(created_at__gte=start_date)
+            .annotate(day=TruncDate("created_at"))
+            .values("day")
+            .annotate(total=Count("id"))
+            .order_by("day")
+        )
+        print("SUMMARIES =", list(summaries))
+        print("FLASHCARDS =", list(flashcards))
+        print("QUIZZES =", list(quizzes))
+        return Response({
+            "summaries": list(summaries),
+            "flashcards": list(flashcards),
+            "quizzes": list(quizzes),
+        })   
