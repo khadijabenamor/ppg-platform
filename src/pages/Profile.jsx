@@ -4,7 +4,7 @@ import { getProfile, updateProfile , changePassword } from "../api/profile";
 export default function Profile() {
 
   const token = localStorage.getItem("access_token");
-
+  const [avatarPreview, setAvatarPreview] = useState(null);
   const [form, setForm] = useState({
     username: "",
     first_name: "",
@@ -37,6 +37,9 @@ export default function Profile() {
         last_name: res.data.last_name || "",
         email: res.data.email || "",
       });
+      if (res.data.avatar_url) {
+  setAvatarPreview(res.data.avatar_url);
+}
       setAvatarUrl(res.data.avatar_url);
     } catch (err) {
       console.error(err);
@@ -121,11 +124,15 @@ export default function Profile() {
 
   return (
     <div style={{
-      maxWidth: "600px",
-      margin: "40px auto",
-      padding: "20px"
+      maxWidth: "750px",
+      margin: "50px auto",
+      padding: "35px",
+      background: "var(--surface)",
+    border: "1px solid var(--border)",
+    borderRadius: "20px",
+    boxShadow: "0 10px 30px rgba(0,0,0,0.15)"
     }}>
-    {avatarUrl && (
+    {/*{avatarUrl && (
   <img
     src={avatarUrl}
     alt="avatar"
@@ -138,49 +145,138 @@ export default function Profile() {
       marginBottom: "20px"
     }}
   />
-)}
-      <h1>Mon Profil</h1>
+)}*/}
+<div
+  style={{
+    display: "flex",
+    justifyContent: "center",
+    marginBottom: "20px"
+  }}
+>
+  <img
+    src={
+      avatarPreview ||
+      "https://via.placeholder.com/150"
+    }
+    alt="Avatar"
+    style={{
+      width: "140px",
+      height: "140px",
+      borderRadius: "50%",
+      objectFit: "cover",
+      border: "4px solid var(--accent)",
+      boxShadow: "0 8px 20px rgba(0,0,0,0.2)"
+    }}
+  />
+</div>
+
+
+      <h1 style={{
+    marginBottom: "30px",
+    fontSize: "32px",
+    fontFamily: "Syne",
+    fontWeight: "800"
+  }}>Mon Profile</h1>
 
       <form onSubmit={handleSubmit}>
 
-        <div>
-          <label>Nom d'utilisateur</label>
+        <div style={{ marginBottom: "20px" }}>
+          <label   style={{
+      display: "block",
+      marginBottom: "8px",
+      fontWeight: "600",
+      color: "var(--text)"
+    }} >Nom d'utilisateur</label>
           <input
             name="username"
             value={form.username}
             onChange={handleChange}
+            style={{
+      width: "100%",
+      padding: "12px 16px",
+      borderRadius: "10px",
+      border: "1px solid var(--border)",
+      background: "var(--surface)",
+      color: "var(--text)",
+      fontSize: "15px"
+    }}
           />
         </div>
 
-        <div>
-          <label>Prénom</label>
+        <div style={{ marginBottom: "20px" }}>
+          <label style={{
+      display: "block",
+      marginBottom: "8px",
+      fontWeight: "600",
+      color: "var(--text)"
+    }}>Prénom</label>
           <input
             name="first_name"
             value={form.first_name}
             onChange={handleChange}
+            style={{
+      width: "100%",
+      padding: "12px 16px",
+      borderRadius: "10px",
+      border: "1px solid var(--border)",
+      background: "var(--surface)",
+      color: "var(--text)",
+      fontSize: "15px"
+    }}
           />
         </div>
 
-        <div>
-          <label>Nom</label>
+        <div style={{ marginBottom: "20px" }}>
+          <label style={{
+      display: "block",
+      marginBottom: "8px",
+      fontWeight: "600",
+      color: "var(--text)"
+    }}>Nom</label>
           <input
             name="last_name"
             value={form.last_name}
             onChange={handleChange}
+            style={{
+      width: "100%",
+      padding: "12px 16px",
+      borderRadius: "10px",
+      border: "1px solid var(--border)",
+      background: "var(--surface)",
+      color: "var(--text)",
+      fontSize: "15px"
+    }}
           />
         </div>
 
-        <div>
-          <label>Email</label>
+        <div style={{ marginBottom: "20px" }}>
+          <label style={{
+      display: "block",
+      marginBottom: "8px",
+      fontWeight: "600",
+      color: "var(--text)"
+    }}>Email</label>
           <input
             name="email"
             value={form.email}
             onChange={handleChange}
+            style={{
+      width: "100%",
+      padding: "12px 16px",
+      borderRadius: "10px",
+      border: "1px solid var(--border)",
+      background: "var(--surface)",
+      color: "var(--text)",
+      fontSize: "15px"
+    }}
           />
         </div>
-        <div>
-  <label>Photo de profil</label>
 
+
+
+     {/*   <div>
+  <label>Photo de profil</label>
+   
   <input
     type="file"
     accept="image/*"
@@ -190,55 +286,215 @@ export default function Profile() {
       )
     }
   />
+</div>*/}
+<div style={{ marginBottom: "25px" }}>
+
+  <label
+    style={{
+      display: "block",
+      marginBottom: "10px",
+      fontWeight: "600"
+    }}
+  >
+    📷 Photo de profil
+  </label>
+
+  <div
+    onClick={() =>
+      document
+        .getElementById("avatarInput")
+        .click()
+    }
+    style={{
+      border: "2px dashed var(--accent)",
+      borderRadius: "15px",
+      padding: "25px",
+      textAlign: "center",
+      cursor: "pointer",
+      background: "var(--surface)"
+    }}
+  >
+    {avatar ? (
+      <div>
+        <strong>{avatar.name}</strong>
+      </div>
+    ) : (
+      <div>
+        Cliquez ici pour sélectionner une image
+      </div>
+    )}
+  </div>
+
+  <input
+    id="avatarInput"
+    type="file"
+    accept="image/*"
+    style={{ display: "none" }}
+    onChange={(e) => {
+      const file = e.target.files[0];
+
+      if (file) {
+
+        setAvatar(file);
+
+        setAvatarPreview(
+          URL.createObjectURL(file)
+        );
+      }
+    }}
+  />
+
 </div>
+{avatarPreview && (
+  <button
+    type="button"
+    onClick={() => {
+      setAvatar(null);
+      setAvatarPreview(null);
+    }}
+    style={{
+      marginTop: "10px",
+      background: "transparent",
+      border: "none",
+      color: "#ff6584",
+      cursor: "pointer",
+      fontWeight: "600"
+    }}
+  >
+    🗑 Supprimer la photo
+  </button>
+)}
           
-        <button type="submit">
+        <button type="submit"   type="submit"
+  style={{
+    width: "100%",
+    padding: "14px",
+    border: "none",
+    borderRadius: "12px",
+    background:
+      "linear-gradient(135deg, var(--accent), var(--accent2))",
+    color: "#fff",
+    fontSize: "16px",
+    fontWeight: "700",
+    cursor: "pointer",
+    marginTop: "15px"
+  }}>
           Sauvegarder
         </button>
 
       </form>
+      <br></br>
       <hr />
+      <br></br>
       <h2>Changer le mot de passe</h2>
+      <br></br>
       <form onSubmit={handlePasswordSubmit}>
 
-  <div>
-    <label>Ancien mot de passe</label>
+  <div style={{ marginBottom: "20px" }}>
+    <label style={{
+      display: "block",
+      marginBottom: "8px",
+      fontWeight: "600",
+      color: "var(--text)"
+    }}>Ancien mot de passe</label>
     <input
       type="password"
       name="old_password"
       value={passwordData.old_password}
       onChange={handlePasswordChange}
+      style={{
+      width: "100%",
+      padding: "12px 16px",
+      borderRadius: "10px",
+      border: "1px solid var(--border)",
+      background: "var(--surface)",
+      color: "var(--text)",
+      fontSize: "15px"
+    }}
     />
   </div>
 
-  <div>
-    <label>Nouveau mot de passe</label>
+  <div style={{ marginBottom: "20px" }}>
+    <label style={{
+      display: "block",
+      marginBottom: "8px",
+      fontWeight: "600",
+      color: "var(--text)"
+    }}>Nouveau mot de passe</label>
     <input
       type="password"
       name="new_password"
       value={passwordData.new_password}
       onChange={handlePasswordChange}
+      style={{
+      width: "100%",
+      padding: "12px 16px",
+      borderRadius: "10px",
+      border: "1px solid var(--border)",
+      background: "var(--surface)",
+      color: "var(--text)",
+      fontSize: "15px"
+    }}
     />
   </div>
 
-  <div>
-    <label>Confirmer le mot de passe</label>
+  <div style={{ marginBottom: "20px" }}>
+    <label style={{
+      display: "block",
+      marginBottom: "8px",
+      fontWeight: "600",
+      color: "var(--text)"
+    }}>Confirmer le mot de passe</label>
     <input
       type="password"
       name="confirm_password"
       value={passwordData.confirm_password}
       onChange={handlePasswordChange}
+      style={{
+      width: "100%",
+      padding: "12px 16px",
+      borderRadius: "10px",
+      border: "1px solid var(--border)",
+      background: "var(--surface)",
+      color: "var(--text)",
+      fontSize: "15px"
+    }}
     />
   </div>
 
-  <button type="submit">
+  <button type="submit"  style={{
+    width: "100%",
+    padding: "14px",
+    border: "none",
+    borderRadius: "12px",
+    background:
+      "linear-gradient(135deg, #f7971e, #ffd200)",
+    color: "#000",
+    fontSize: "16px",
+    fontWeight: "700",
+    cursor: "pointer",
+    marginTop: "15px"
+  }}>
     Modifier le mot de passe
   </button>
 
 </form>
 
       {message && (
+        <div
+    style={{
+      marginTop: "20px",
+      padding: "12px",
+      borderRadius: "10px",
+      background: "rgba(67,233,123,0.1)",
+      border: "1px solid rgba(67,233,123,0.3)",
+      color: "#43e97b",
+      textAlign: "center",
+      fontWeight: "600"
+    }}
+  >
         <p>{message}</p>
+        </div>
       )}
 
     </div>
